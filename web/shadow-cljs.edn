@@ -1,0 +1,11 @@
+{:source-paths ["src"]
+ :dependencies [[reagent "2.0.0"]
+                [com.cognitect/transit-cljs "0.8.280"]]
+ :builds
+ {:globe
+  {:target     :browser
+   :output-dir "public/js"
+   :modules    {:main {:init-fn globe.web.core/init!}}
+   :devtools   {:http-root "public"
+                :http-port 8080
+                :repl-preamble "(enable-console-print!)"}}}}
