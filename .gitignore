@@ -1,0 +1,42 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Clojure / ClojureScript
+.cpcache/
+.shadow-cljs/
+.nrepl-port
+.repl-port
+target/
+checkouts/
+bin/
+resources/public/js/compiled/
+out/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Project specific build artifacts
+web/public/js/
+!web/public/js/main.js
+!web/public/js/cljs-runtime/
+
+# Actually, usually we don't want to commit compiled JS in cljs projects if we have a CI build.
+# But looking at the repo, they are committed. I'll leave them for now unless I'm sure.
+# Wait, the file list showed web/public/js/main.js etc.
+
+# Let's be more specific for this project
+web/node_modules/
+api/.cpcache/
+web/.shadow-cljs/
+flutter/.cljd/
+flutter/.dart_tool/
+flutter/.packages
+flutter/pubspec.lock

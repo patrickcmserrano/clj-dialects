@@ -1,0 +1,526 @@
+{:meta
+ {:projeto "clojure-dialects-globe"
+  :versao  "1.0.0"
+  :fonte   "https://clojure.cc"}
+
+ :ecossistemas
+ [{:id        :jvm
+   :nome      "JVM"
+   :cor       [245 158 11]
+   :lat       41.8
+   :lng       -87.6
+   :descricao "Java Virtual Machine — Chicago IL, EUA (Rich Hickey / Cognitect)"}
+  {:id        :js
+   :nome      "JavaScript"
+   :cor       [251 191 36]
+   :lat       52.4
+   :lng       4.9
+   :descricao "Browser / Node.js / VS Code — Amsterdam, Países Baixos (Michiel Borkent)"}
+  {:id        :c-cpp
+   :nome      "C / C++"
+   :cor       [239 68 68]
+   :lat       40.7
+   :lng       -74.3
+   :descricao "Compilação nativa C / C++ — Murray Hill NJ, EUA (Bell Labs)"}
+  {:id        :go
+   :nome      "Go"
+   :cor       [20 184 166]
+   :lat       37.4
+   :lng       -122.1
+   :descricao "Ecossistema Go — Mountain View CA, EUA (Google)"}
+  {:id        :python
+   :nome      "Python"
+   :cor       [99 149 255]
+   :lat       52.1
+   :lng       5.3
+   :descricao "Ecossistema Python — Utrecht, Países Baixos (Guido van Rossum)"}
+  {:id        :rust
+   :nome      "Rust"
+   :cor       [249 115 22]
+   :lat       49.3
+   :lng       -123.1
+   :descricao "Rust / LLVM — Vancouver BC, Canadá (Graydon Hoare)"}
+  {:id        :beam
+   :nome      "BEAM"
+   :cor       [168 85 247]
+   :lat       59.3
+   :lng       18.1
+   :descricao "Erlang / BEAM VM — Estocolmo, Suécia (Ericsson)"}
+  {:id        :dotnet
+   :nome      ".NET"
+   :cor       [139 92 246]
+   :lat       47.6
+   :lng       -122.2
+   :descricao "Microsoft .NET / CLR — Redmond WA, EUA (Microsoft)"}
+  {:id        :dart
+   :nome      "Dart"
+   :cor       [52 211 153]
+   :lat       48.8
+   :lng       2.3
+   :descricao "Dart / Flutter — Paris, França (Christophe Grand & Baptiste Dupuch)"}
+  {:id        :lua
+   :nome      "Lua"
+   :cor       [34 197 94]
+   :lat       -22.9
+   :lng       -43.2
+   :descricao "Lua — criada na PUC-Rio, Rio de Janeiro 🇧🇷"}
+  {:id        :php
+   :nome      "PHP"
+   :cor       [129 120 220]
+   :lat       49.1
+   :lng       -122.9
+   :descricao "PHP — British Columbia, Canadá (Rasmus Lerdorf)"}
+  {:id        :wasm
+   :nome      "Wasm"
+   :cor       [148 163 184]
+   :lat       37.8
+   :lng       -122.4
+   :descricao "WebAssembly — San Francisco CA, EUA (Mozilla / W3C)"}
+  {:id        :lisp
+   :nome      "Lisp"
+   :cor       [236 72 153]
+   :lat       42.4
+   :lng       -71.1
+   :descricao "Common Lisp / GNU Guile — Cambridge MA, EUA (MIT, John McCarthy)"}
+  {:id        :outros
+   :nome      "Outros"
+   :cor       [107 114 128]
+   :lat       52.3
+   :lng       4.8
+   :descricao "Perl, AppleScript e outras plataformas — Amsterdam, Países Baixos"}]
+
+ :dialetos
+ [{:nome     "Clojure"
+   :eco      :jvm
+   :stars    10927
+   :rank     1
+   :host     "JVM"
+   :repo     "clojure/clojure"
+   :release  "2026-04-22"
+   :criador  "Rich Hickey"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "O original; Lisp dinâmico e funcional na JVM"}
+  {:nome     "ClojureScript"
+   :eco      :js
+   :stars    9385
+   :rank     2
+   :host     "JavaScript"
+   :repo     "clojure/clojurescript"
+   :release  "2026-05-07"
+   :criador  "Rich Hickey"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Clojure compilado para JS via Google Closure"}
+  {:nome     "Carp"
+   :eco      :c-cpp
+   :stars    5936
+   :rank     3
+   :host     "C"
+   :repo     "carp-lang/Carp"
+   :release  "2026-03-28"
+   :criador  "Erik Svedäng"
+   :pais     "Suécia"
+   :bandeira "🇸🇪"
+   :desc     "Lisp estaticamente tipado sem GC, compila para C"}
+  {:nome     "Hy"
+   :eco      :python
+   :stars    5418
+   :rank     4
+   :host     "Python"
+   :repo     "hylang/hy"
+   :release  "2026-05-24"
+   :criador  "Paul Tagliamonte"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Dialeto Lisp embutido no Python (adjacente a Clojure)"}
+  {:nome     "Babashka"
+   :eco      :jvm
+   :stars    4530
+   :rank     5
+   :host     "GraalVM native"
+   :repo     "babashka/babashka"
+   :release  "2026-04-20"
+   :criador  "Michiel Borkent"
+   :pais     "Países Baixos"
+   :bandeira "🇳🇱"
+   :desc     "Interpretador Clojure de inicialização rápida para shell scripting"}
+  {:nome     "Janet"
+   :eco      :c-cpp
+   :stars    4297
+   :rank     6
+   :host     "C"
+   :repo     "janet-lang/janet"
+   :release  "2026-02-18"
+   :criador  "Calvin Rose"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Linguagem dinâmica e VM bytecode (adjacente a Clojure)"}
+  {:nome     "Jank"
+   :eco      :c-cpp
+   :stars    3265
+   :rank     7
+   :host     "C++ / LLVM"
+   :repo     "jank-lang/jank"
+   :release  "2026-06-04"
+   :criador  "Jeaye Wilkerson"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Dialeto Clojure nativo com interop C++ transparente"}
+  {:nome     "Fennel"
+   :eco      :lua
+   :stars    2400
+   :rank     8
+   :host     "Lua"
+   :repo     "bakpakin/Fennel"
+   :release  "2025-12-30"
+   :criador  "Calvin Rose"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Dialeto Lisp com interop transparente com Lua"}
+  {:nome     "Joker"
+   :eco      :go
+   :stars    1750
+   :rank     9
+   :host     "Go"
+   :repo     "candid82/joker"
+   :release  "2026-06-03"
+   :criador  "Roman Bataev"
+   :pais     "Rússia"
+   :bandeira "🇷🇺"
+   :desc     "Interpretador, linter e formatador Clojure pequeno"}
+  {:nome     "Lux"
+   :eco      :jvm
+   :stars    1739
+   :rank     10
+   :host     "JVM (multi-target)"
+   :repo     "LuxLang/lux"
+   :release  "2025-11-01"
+   :criador  "Eduardo Lopes"
+   :pais     "Portugal"
+   :bandeira "🇵🇹"
+   :desc     "Lisp funcional estaticamente tipado com múltiplos alvos"}
+  {:nome     "Clojerl"
+   :eco      :beam
+   :stars    1713
+   :rank     11
+   :host     "Erlang VM"
+   :repo     "clojerl/clojerl"
+   :release  "2025-01-07"
+   :criador  "Juan Facorro"
+   :pais     "Argentina"
+   :bandeira "🇦🇷"
+   :desc     "Clojure para a BEAM"}
+  {:nome     "ClojureCLR"
+   :eco      :dotnet
+   :stars    1643
+   :rank     12
+   :host     ".NET"
+   :repo     "clojure/clojure-clr"
+   :release  "2026-05-10"
+   :criador  "David Miller"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Port do Clojure para o Common Language Runtime"}
+  {:nome     "ClojureDart"
+   :eco      :dart
+   :stars    1621
+   :rank     13
+   :host     "Dart / Flutter"
+   :repo     "Tensegritics/ClojureDart"
+   :release  "2026-05-18"
+   :criador  "Christophe Grand & Baptiste Dupuch"
+   :pais     "França"
+   :bandeira "🇫🇷"
+   :desc     "Clojure para Flutter e Dart com alvos native e Wasm"}
+  {:nome     "Ferret"
+   :eco      :c-cpp
+   :stars    1121
+   :rank     14
+   :host     "C++11"
+   :repo     "nakkaya/ferret"
+   :release  "2020-01-29"
+   :criador  "Nurullah Akkaya"
+   :pais     "Turquia"
+   :bandeira "🇹🇷"
+   :desc     "Lisp free-software para controle embarcado em tempo real"}
+  {:nome     "Planck"
+   :eco      :js
+   :stars    1040
+   :rank     15
+   :host     "JavaScriptCore"
+   :repo     "planck-repl/planck"
+   :release  "2024-03-24"
+   :criador  "Mike Fikes"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "REPL ClojureScript standalone no JavaScriptCore"}
+  {:nome     "ClojureRS"
+   :eco      :rust
+   :stars    980
+   :rank     16
+   :host     "Rust"
+   :repo     "clojure-rs/ClojureRS"
+   :release  "2023-04-16"
+   :criador  "Timothy Baldridge"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Implementação Clojure sobre Rust"}
+  {:nome     "nbb"
+   :eco      :js
+   :stars    955
+   :rank     17
+   :host     "Node.js"
+   :repo     "babashka/nbb"
+   :release  "2026-05-24"
+   :criador  "Michiel Borkent"
+   :pais     "Países Baixos"
+   :bandeira "🇳🇱"
+   :desc     "Scripting em Clojure no Node.js via SCI"}
+  {:nome     "Squint"
+   :eco      :js
+   :stars    865
+   :rank     18
+   :host     "JavaScript"
+   :repo     "squint-cljs/squint"
+   :release  "2026-06-02"
+   :criador  "Michiel Borkent"
+   :pais     "Países Baixos"
+   :bandeira "🇳🇱"
+   :desc     "Dialeto ClojureScript leve que transpila para JS mutável"}
+  {:nome     "Cherry"
+   :eco      :js
+   :stars    641
+   :rank     19
+   :host     "JavaScript (ES6)"
+   :repo     "squint-cljs/cherry"
+   :release  "2025-12-18"
+   :criador  "Michiel Borkent"
+   :pais     "Países Baixos"
+   :bandeira "🇳🇱"
+   :desc     "Compilador experimental ClojureScript para módulos ES6"}
+  {:nome     "YAMLScript"
+   :eco      :jvm
+   :stars    622
+   :rank     20
+   :host     "GraalVM native"
+   :repo     "yaml/yamlscript"
+   :release  "2026-06-07"
+   :criador  "Ingy döt Net"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Sintaxe YAML que traduz para código e semântica Clojure"}
+  {:nome     "Joyride"
+   :eco      :js
+   :stars    583
+   :rank     21
+   :host     "VS Code"
+   :repo     "BetterThanTomorrow/joyride"
+   :release  "2026-05-08"
+   :criador  "Peter Strömberg"
+   :pais     "Suécia"
+   :bandeira "🇸🇪"
+   :desc     "Torna o VS Code hackeável como o Emacs, com Clojure"}
+  {:nome     "Glojure"
+   :eco      :go
+   :stars    535
+   :rank     22
+   :host     "Go"
+   :repo     "glojurelang/glojure"
+   :release  "2025-10-11"
+   :criador  "Joel Hamlin"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Interpretador Clojure hospedado em Go com interop Go"}
+  {:nome     "Phel"
+   :eco      :php
+   :stars    512
+   :rank     23
+   :host     "PHP"
+   :repo     "phel-lang/phel-lang"
+   :release  "2026-06-06"
+   :criador  "Jens Haase"
+   :pais     "Alemanha"
+   :bandeira "🇩🇪"
+   :desc     "Lisp funcional que compila para PHP"}
+  {:nome     "let-go"
+   :eco      :go
+   :stars    487
+   :rank     24
+   :host     "Go"
+   :repo     "nooga/let-go"
+   :release  "2026-05-31"
+   :criador  "Marcin Olszewski"
+   :pais     "Polônia"
+   :bandeira "🇵🇱"
+   :desc     "\"Quase Clojure\" escrito em Go"}
+  {:nome     "Basilisp"
+   :eco      :python
+   :stars    465
+   :rank     25
+   :host     "Python 3"
+   :repo     "basilisp-lang/basilisp"
+   :release  "2026-04-09"
+   :criador  "Christopher Rink"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Dialeto Lisp compatível com Clojure e interop Python transparente"}
+  {:nome     "Scittle"
+   :eco      :js
+   :stars    432
+   :rank     26
+   :host     "JavaScript (browser)"
+   :repo     "babashka/scittle"
+   :release  "2026-02-10"
+   :criador  "Michiel Borkent"
+   :pais     "Países Baixos"
+   :bandeira "🇳🇱"
+   :desc     "Execute Clojure direto de tags <script> via SCI"}
+  {:nome     "Cloture"
+   :eco      :lisp
+   :stars    399
+   :rank     27
+   :host     "Common Lisp"
+   :repo     "ruricolist/cloture"
+   :release  "2026-01-11"
+   :criador  "ruricolist"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Dialeto Clojure implementado em Common Lisp"}
+  {:nome     "obb"
+   :eco      :outros
+   :stars    247
+   :rank     28
+   :host     "Applescript Open Scripting"
+   :repo     "babashka/obb"
+   :release  "2022-03-09"
+   :criador  "Michiel Borkent"
+   :pais     "Países Baixos"
+   :bandeira "🇳🇱"
+   :desc     "Scripting SCI ClojureScript do Mac OSX"}
+  {:nome     "Lokke"
+   :eco      :lisp
+   :stars    220
+   :rank     29
+   :host     "GNU Guile"
+   :repo     "lokke-clojure/lokke"
+   :release  "2024-03-18"
+   :criador  "Robin Lee Powell"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Dialeto Clojure hospedado no GNU Guile"}
+  {:nome     "JO Clojure"
+   :eco      :c-cpp
+   :stars    153
+   :rank     30
+   :host     "C++"
+   :repo     "Zelex/jo_clojure"
+   :release  "2025-04-26"
+   :criador  "Jon Olick"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Interpretador Clojure em único header C++"}
+  {:nome     "Cream"
+   :eco      :jvm
+   :stars    144
+   :rank     31
+   :host     "GraalVM"
+   :repo     "nicholasgasior/cream"
+   :release  "2026-05-21"
+   :criador  "Nicholas Gasior"
+   :pais     "Polônia"
+   :bandeira "🇵🇱"
+   :desc     "Runtime Clojure de inicialização rápida construído sobre Crema"}
+  {:nome     "clojure-clr-next"
+   :eco      :dotnet
+   :stars    142
+   :rank     32
+   :host     ".NET (F#)"
+   :repo     "clojure/clojure-clr-next"
+   :release  "2025-09-23"
+   :criador  "David Miller"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "ClojureCLR de próxima geração em desenvolvimento"}
+  {:nome     "Calcit"
+   :eco      :js
+   :stars    138
+   :rank     33
+   :host     "JavaScript (Rust runtime)"
+   :repo     "calcit-lang/calcit"
+   :release  "2026-06-05"
+   :criador  "Jiyinyiyong"
+   :pais     "China"
+   :bandeira "🇨🇳"
+   :desc     "Linguagem de scripting inspirada em ClojureScript com formato de código estrutural"}
+  {:nome     "ClojureWasm"
+   :eco      :wasm
+   :stars    105
+   :rank     34
+   :host     "WebAssembly (Zig)"
+   :repo     "clojure-wasm/clojure-wasm"
+   :release  "2026-04-26"
+   :criador  "Kohta Ito"
+   :pais     "Japão"
+   :bandeira "🇯🇵"
+   :desc     "Runtime Clojure independente otimizado para Wasm"}
+  {:nome     "Lingy"
+   :eco      :outros
+   :stars    44
+   :rank     35
+   :host     "Perl"
+   :repo     "yaml/lingy"
+   :release  "2023-07-27"
+   :criador  "Ingy döt Net"
+   :pais     "Estados Unidos"
+   :bandeira "🇺🇸"
+   :desc     "Dialeto Lisp inspirado em Clojure implementado em Perl"}
+  {:nome     "Gloat"
+   :eco      :go
+   :stars    38
+   :rank     36
+   :host     "Go"
+   :repo     "glojurelang/gloat"
+   :release  "2026-05-27"
+   :criador  "Ingo Blum"
+   :pais     "Alemanha"
+   :bandeira "🇩🇪"
+   :desc     "Compila Clojure (e YAMLScript) para Go, binários nativos e Wasm"}
+  {:nome     "go-joker"
+   :eco      :go
+   :stars    19
+   :rank     37
+   :host     "Go"
+   :repo     "nicholasgasior/go-joker"
+   :release  "2026-06-06"
+   :criador  "Nicholas Gasior"
+   :pais     "Polônia"
+   :bandeira "🇵🇱"
+   :desc     "Fork otimizado do Joker para infraestrutura de coding-agents"}
+  {:nome     "cljrs"
+   :eco      :rust
+   :stars    16
+   :rank     38
+   :host     "Rust + MLIR/LLVM"
+   :repo     "fstamour/cljrs"
+   :release  "2026-04-24"
+   :criador  "Francis St-Amour"
+   :pais     "Canadá"
+   :bandeira "🇨🇦"
+   :desc     "Clojure com compilação MLIR/LLVM e suporte a GPU"}
+  {:nome     "ClojureFnl"
+   :eco      :lua
+   :stars    4
+   :rank     39
+   :host     "Fennel / Lua"
+   :repo     "pyrmont/clojurefnl"
+   :release  "2026-05-14"
+   :criador  "James Pyrmont"
+   :pais     "Austrália"
+   :bandeira "🇦🇺"
+   :desc     "Transpilador Clojure-para-Fennel em estágio inicial"}]}
+l"}]}
+}
+"}]}
+}
+
