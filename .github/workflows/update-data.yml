@@ -1,0 +1,22 @@
+name: Update dialect stars
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: turtlequeue/setup-babashka@v1
+        with:
+          babashka-version: "1.12.218"
+      - run: bb scripts/fetch_stars.bb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "data: atualiza stars [skip ci]"
+          file_pattern: "data/dialects.edn"

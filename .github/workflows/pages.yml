@@ -1,0 +1,59 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Setup Babashka
+        uses: DeLaGuardo/setup-clojure@13.6.1
+        with:
+          bb: '1.12.218'
+
+      - name: Install dependencies
+        working-directory: web
+        run: npm install
+
+      - name: Update data
+        run: bb scripts/fetch_stars.bb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Web App
+        working-directory: web
+        run: npx shadow-cljs release globe
+
+      - name: Prepare static assets
+        run: |
+          mkdir -p web/public/data
+          cp data/dialects.edn web/public/data/
+          touch web/public/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: web/public
+          branch: gh-pages
