@@ -1,0 +1,19 @@
+(ns globe.data
+  (:require ["package:http/http.dart" :as http]
+            ["dart:convert" :as convert]
+            [globe.state :as state]))
+
+(defn fetch-dialects! [api-base]
+  (dart:async
+   (try
+     (let [url      (Uri/parse (str api-base "/api/dialects"))
+           response (await (http/get url))
+           body     (.-body response)
+           data     (convert/jsonDecode body)]
+       (swap! state/app assoc
+              :dialetos     (vec (get data "dialetos"))
+              :ecossistemas (vec (get data "ecossistemas"))
+              :carregando   false))
+     (catch Exception e
+       (dart:core/print (str "Falha ao carregar dados: " e))
+       (swap! state/app assoc :carregando false)))))

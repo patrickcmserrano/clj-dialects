@@ -1,0 +1,15 @@
+(ns globe.state)
+
+(defonce app
+  (atom {:dialetos     []
+         :ecossistemas []
+         :selecionado  nil
+         :globe-group  nil
+         :auto-rotate  true
+         :carregando   true}))
+
+(defn selecionar! [dialeto]
+  (swap! app assoc :selecionado dialeto :auto-rotate false))
+
+(defn fechar-painel! []
+  (swap! app assoc :selecionado nil :auto-rotate true))

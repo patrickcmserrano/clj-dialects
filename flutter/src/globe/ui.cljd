@@ -1,0 +1,136 @@
+(ns globe.ui
+  (:require ["package:flutter/material.dart" :as m]
+            [globe.state :as state]))
+
+(defn cor->color [[r g b]]
+  (m/Color/fromARGB 255 r g b))
+
+(defn stars-bar [stars max-stars]
+  (let [pct (/ (or stars 0) max-stars)]
+    (m/LinearProgressIndicator.
+     (.-value m/LinearProgressIndicator) (min pct 1.0)
+     (.-backgroundColor m/LinearProgressIndicator) (m/Color. 0xFF0d1f44)
+     (.-valueColor m/LinearProgressIndicator)
+     (m/AlwaysStoppedAnimation. (m/Color. 0xFF3b82f6)))))
+
+(defn painel-lateral []
+  (let [{:keys [selecionado ecossistemas]} @state/app]
+    (when selecionado
+      (let [eco (first (filter #(= (get % "id") (get selecionado "eco")) ecossistemas))]
+        (m/Container.
+         (.-width m/Container) 300.0
+         (.-color m/Container) (m/Color. 0xEE020817)
+         (.-padding m/Container) (m/EdgeInsets/all 16.0)
+         (.-child m/Container)
+         (m/Column.
+          (.-crossAxisAlignment m/Column) m/CrossAxisAlignment.start
+          (.-children m/Column)
+          [(m/Row.
+            (.-mainAxisAlignment m/Row) m/MainAxisAlignment.spaceBetween
+            (.-children m/Row)
+            [(m/Text.
+              (str "Rank #" (get selecionado "rank"))
+              (.-style m/Text) (m/TextStyle.
+                                (.-color m/TextStyle) (m/Color. 0xFF64748b)
+                                (.-fontSize m/TextStyle) 11.0))
+             (m/IconButton.
+              (.-icon m/IconButton) (m/Icon. m/Icons.close)
+              (.-onPressed m/IconButton) state/fechar-painel!
+              (.-color m/IconButton) (m/Color. 0xFF64748b))])
+           (m/Text.
+            (get selecionado "nome")
+            (.-style m/Text) (m/TextStyle.
+                               (.-color m/TextStyle) (m/Color. 0xFFf8fafc)
+                               (.-fontSize m/TextStyle) 20.0
+                               (.-fontWeight m/TextStyle) m/FontWeight.bold))
+           (m/SizedBox. (.-height m/SizedBox) 8.0)
+           (when (get selecionado "pais")
+             (m/Container.
+              (.-margin m/Container) (m/EdgeInsets/only 0.0 0.0 0.0 12.0)
+              (.-padding m/Container) (m/EdgeInsets/all 8.0)
+              (.-decoration m/Container)
+              (m/BoxDecoration.
+               (.-color m/BoxDecoration) (m/Color. 0x0Affffff)
+               (.-border m/BoxDecoration)
+               (m/Border/all (m/BorderSide.
+                               (.-color m/BorderSide) (m/Color. 0x15ffffff)
+                               (.-width m/BorderSide) 1.0))
+               (.-borderRadius m/BoxDecoration) (m/BorderRadius/circular 6.0))
+              (.-child m/Container)
+              (m/Row.
+               (.-children m/Row)
+               [(when (get selecionado "bandeira")
+                  (m/Text.
+                   (get selecionado "bandeira")
+                   (.-style m/Text) (m/TextStyle. (.-fontSize m/TextStyle) 20.0)))
+                (m/SizedBox. (.-width m/SizedBox) 8.0)
+                (m/Column.
+                 (.-crossAxisAlignment m/Column) m/CrossAxisAlignment.start
+                 (.-mainAxisSize m/Column) m/MainAxisSize.min
+                 (.-children m/Column)
+                 [(m/Text.
+                   (get selecionado "pais")
+                   (.-style m/Text) (m/TextStyle.
+                                      (.-color m/TextStyle) (m/Color. 0xFFe2e8f0)
+                                      (.-fontSize m/TextStyle) 13.0
+                                      (.-fontWeight m/TextStyle) m/FontWeight.w500))
+                  (when (get selecionado "criador")
+                    (m/Text.
+                     (get selecionado "criador")
+                     (.-style m/Text) (m/TextStyle.
+                                        (.-color m/TextStyle) (m/Color. 0xFF64748b)
+                                        (.-fontSize m/TextStyle) 11.0)))])])))
+           (m/Text.
+            (get selecionado "desc")
+            (.-style m/Text) (m/TextStyle.
+                               (.-color m/TextStyle) (m/Color. 0xFF94a3b8)
+                               (.-fontSize m/TextStyle) 13.0))
+           (m/SizedBox. (.-height m/SizedBox) 16.0)
+           (stars-bar (get selecionado "stars") 11000)
+           (m/SizedBox. (.-height m/SizedBox) 8.0)
+           (m/Text.
+            (str "Stars: " (or (get selecionado "stars") "—"))
+            (.-style m/Text) (m/TextStyle.
+                               (.-color m/TextStyle) (m/Color. 0xFF64748b)
+                               (.-fontSize m/TextStyle) 12.0))]))))))
+
+(defn legenda []
+  (let [{:keys [ecossistemas dialetos]} @state/app]
+    (m/Container.
+     (.-padding m/Container) (m/EdgeInsets/all 12.0)
+     (.-decoration m/Container)
+     (m/BoxDecoration.
+      (.-color m/BoxDecoration) (m/Color. 0xDD020817)
+      (.-borderRadius m/BoxDecoration) (m/BorderRadius/circular 8.0))
+     (.-child m/Container)
+     (m/Column.
+      (.-mainAxisSize m/Column) m/MainAxisSize.min
+      (.-children m/Column)
+      (vec
+       (for [eco ecossistemas
+             :let [n (count (filter #(= (get % "eco") (get eco "id")) dialetos))]
+             :when (> n 0)]
+         (m/GestureDetector.
+          (.-onTap m/GestureDetector)
+          (fn []
+            (when-let [d (first (filter #(= (get % "eco") (get eco "id")) dialetos))]
+              (state/selecionar! d)))
+          (.-child m/GestureDetector)
+          (m/Padding.
+           (.-padding m/Padding) (m/EdgeInsets/symmetric 0.0 3.0)
+           (.-child m/Padding)
+           (m/Row.
+            (.-children m/Row)
+            [(m/Container.
+              (.-width m/Container) 8.0
+              (.-height m/Container) 8.0
+              (.-decoration m/Container)
+              (m/BoxDecoration.
+               (.-color m/BoxDecoration) (cor->color (get eco "cor"))
+               (.-shape m/BoxDecoration) m/BoxShape.circle))
+             (m/SizedBox. (.-width m/SizedBox) 8.0)
+             (m/Text.
+              (str (get eco "nome") " (" n ")")
+              (.-style m/Text) (m/TextStyle.
+                                 (.-color m/TextStyle) (m/Color. 0xFF94a3b8)
+                                 (.-fontSize m/TextStyle) 12.0))]))))))))))

@@ -1,0 +1,110 @@
+(ns globe.core
+  (:require ["package:flutter/material.dart"  :as m]
+            ["package:three_js/three_js.dart" :as t3]
+            [globe.scene :as scene]
+            [globe.state :as state]
+            [globe.data  :as data]
+            [globe.ui    :as ui]))
+
+(def API-BASE "http://192.168.0.109:3000")
+
+(defn globe-widget []
+  (let [three (t3/ThreeJS.)]
+    (set! (.-init three)
+          (fn []
+            (let [globe-g (t3/Group.)]
+              (.add (.-scene three) globe-g)
+              (.add globe-g (scene/make-globe))
+              (.add globe-g (scene/make-atmosphere scene/GLOBE-RADIUS))
+              (.add (.-scene three) (t3/AmbientLight. (t3/Color. 0x0d1f44) 1.2))
+              (.add (.-scene three)
+                    (doto (t3/DirectionalLight. (t3/Color. 0x5588cc) 1.4)
+                      (-> .-position (.set 1.5 0.4 1.0))))
+              (set! (.-isometric (.-camera three)) false)
+              (.set (.-position (.-camera three)) 0.0 0.0 280.0)
+              (set! (.. three -scene -background) (t3/Color. 0x020817))
+              (swap! state/app assoc :globe-group globe-g)
+              ;; quando dados chegam, adiciona marcadores
+              (add-watch state/app ::markers
+                (fn [_ _ old new]
+                  (when (and (not (:carregando new)) (:carregando old))
+                    (let [{:keys [dialetos ecossistemas]} new
+                          por-eco (group-by #(get % "eco") dialetos)]
+                      (doseq [eco ecossistemas]
+                        (let [eco-id  (get eco "id")
+                              ds      (get por-eco eco-id [])
+                              cor     (get eco "cor")
+                              lat     (get eco "lat")
+                              lng     (get eco "lng")
+                              n       (count ds)]
+                          (when (> n 0)
+                            (let [sp (t3/Sprite.
+                                      (t3/SpriteMaterial.
+                                       #dart{:color (t3/Color/fromRGBO
+                                                     (nth cor 0) (nth cor 1) (nth cor 2) 0.5)
+                                             :blending t3/AdditiveBlending
+                                             :transparent true
+                                             :depthWrite false}))
+                                  base (+ 18 (* n 5.5))]
+                              (.set (.-scale sp) base base 1.0)
+                              (.copy (.-position sp)
+                                     (scene/ll->xyz lat lng (+ scene/GLOBE-RADIUS 0.3)))
+                              (.add globe-g sp))))
+                          ;; dialetos individuais
+                          (doseq [eco ecossistemas]
+                            (let [eco-id (get eco "id")
+                                  ds     (get por-eco eco-id [])
+                                  n      (count ds)
+                                  cor    (get eco "cor")
+                                  eco-lat (get eco "lat")
+                                  eco-lng (get eco "lng")]
+                              (doseq [[i d] (map-indexed vector ds)]
+                                (let [angle (+ (* (/ i n) 2 dart:math/pi)
+                                               (* (.codeUnitAt eco-id 0) 0.22))
+                                      ring  (+ 4 (* i 0.85))
+                                      lat   (+ eco-lat (* (dart:math/cos angle) ring))
+                                      lng   (+ eco-lng (* (dart:math/sin angle) ring 1.45))
+                                      base  (scene/dialeto-scale (get d "stars"))
+                                      sp    (t3/Sprite.
+                                             (t3/SpriteMaterial.
+                                              #dart{:color (t3/Color/fromRGBO
+                                                            (nth cor 0) (nth cor 1) (nth cor 2) 0.8)
+                                                    :blending t3/AdditiveBlending
+                                                    :transparent true
+                                                    :depthWrite false}))]
+                                  (.set (.-scale sp) base base 1.0)
+                                  (.copy (.-position sp)
+                                         (scene/ll->xyz lat lng (+ scene/GLOBE-RADIUS 1.8)))
+                                  (.add globe-g sp)))))))))))
+
+    (set! (.-animate three)
+          (fn []
+            (let [gg (:globe-group @state/app)]
+              (when (and gg (:auto-rotate @state/app))
+                (set! (.. gg -rotation -y)
+                      (+ (.. gg -rotation -y) 0.0018))))))
+
+    (m/Scaffold.
+     (.-body m/Scaffold)
+     (m/Row.
+      (.-children m/Row)
+      [(m/Expanded.
+        (.-child m/Expanded)
+        (t3/threeBuilder three))
+       (ui/painel-lateral)])
+     (.-floatingActionButton m/Scaffold)
+     (m/Positioned.
+      (.-bottom m/Positioned) 24.0
+      (.-left m/Positioned) 24.0
+      (.-child m/Positioned) (ui/legenda)))))
+
+(defn main []
+  (data/fetch-dialects! API-BASE)
+  (m/runApp
+   (m/MaterialApp.
+    (.-title m/MaterialApp) "Clojure Dialects Globe"
+    (.-theme m/MaterialApp)
+    (m/ThemeData.
+     (.-brightness m/ThemeData) m/Brightness.dark
+     (.-fontFamily m/ThemeData) "monospace")
+    (.-home m/MaterialApp) (globe-widget))))

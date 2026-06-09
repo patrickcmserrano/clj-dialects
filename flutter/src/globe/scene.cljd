@@ -1,0 +1,44 @@
+(ns globe.scene
+  (:require ["package:three_js/three_js.dart" :as t3]
+            ["dart:math" :as math]))
+
+(def GLOBE-RADIUS 100.0)
+
+(defn ll->xyz [lat lng r]
+  (let [phi   (* (- 90.0 lat) (/ math/pi 180.0))
+        theta (* (+ lng 180.0) (/ math/pi 180.0))]
+    (t3/Vector3.
+     (* (- r) (math/sin phi) (math/cos theta))
+     (*    r  (math/cos phi))
+     (*    r  (math/sin phi) (math/sin theta)))))
+
+(defn make-globe []
+  (t3/Mesh.
+   (t3/SphereGeometry. GLOBE-RADIUS 72 72)
+   (t3/MeshPhongMaterial.
+    #dart{:color     (t3/Color. 0x04101e)
+          :shininess 8.0})))
+
+(defn make-atmosphere [radius]
+  (t3/Mesh.
+   (t3/SphereGeometry. (* radius 1.065) 48 48)
+   (t3/ShaderMaterial.
+    #dart{:vertexShader
+          "varying vec3 vN;
+           void main(){
+             vN=normalize(normalMatrix*normal);
+             gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);
+           }"
+          :fragmentShader
+          "varying vec3 vN;
+           void main(){
+             float i=pow(max(0.,0.76-dot(vN,vec3(0.,0.,1.))),2.4);
+             gl_FragColor=vec4(0.1,0.52,1.,i*0.85);
+           }"
+          :side        t3/BackSide
+          :blending    t3/AdditiveBlending
+          :transparent true
+          :depthWrite  false})))
+
+(defn dialeto-scale [stars]
+  (+ 2.5 (* 0.75 (math/pow (or stars 30.0) 0.38))))
